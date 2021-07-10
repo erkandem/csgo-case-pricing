@@ -1,7 +1,17 @@
+import importlib
+import pathlib
+import sys
+from typing import (
+    Any,
+    Dict,
+    List,
+)
+
 api = "https://csgobackpack.net/api/"
 """
 API endpoint used for single item price lookups
 """
+
 
 case_urls = [
       "https://csgostash.com/case/277/Shattered-Web-Case",
@@ -42,3 +52,35 @@ case_urls = [
 """
 reference pages to get an overview of the prices in the cases
 """
+
+CaseType = List[Dict[str, Any]]
+DEFAULT_CASE_NAME_VARIABLE = 'CASE_NAME'
+DEFAULT_CASE_ITEMS_VARIABLE = 'CASE_ITEMS'
+DEFAULT_CASE_ITEMS_PACKAGE_NAME = 'cases'
+
+
+def init_cases() -> Dict[str, CaseType]:
+    """ Initializes case data from modules.
+
+    imports all available data from modules in package
+    and creates a single importable dict object.
+
+    key: case name
+    value: dict containing basic case contents
+
+    """
+    all_cases = {}
+    folder = pathlib.Path(__file__).parent / DEFAULT_CASE_ITEMS_PACKAGE_NAME
+    sys.path.append(str(folder))
+    case_modules = list(
+        p for p in folder.iterdir()
+        if p.is_file()  # discard packages, e.g. __pycache__
+        and '__' not in p.stem  # discard __init__ and similar files
+    )
+    for case_module in case_modules:
+        module = importlib.import_module(case_module.stem)
+        all_cases[getattr(module, DEFAULT_CASE_NAME_VARIABLE)] = getattr(module, DEFAULT_CASE_ITEMS_VARIABLE)
+    return all_cases
+
+
+ALL_CASES: Dict[str, CaseType] = init_cases()

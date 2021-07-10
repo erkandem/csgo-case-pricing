@@ -1,0 +1,5 @@
+
+
+{% for item in case_items %}
+<p> {{ forloop.counter }} {{ item.name }}, {{ item.grade }}, {{ item.exterior }}, {{ item.is_stattrack }} </p>
+{% endfor %}

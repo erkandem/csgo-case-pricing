@@ -1,0 +1,7 @@
+-r requirements.txt
+
+pre-commit
+pytest
+# sudo apt-get install -y graphviz graphviz-dev
+pygraphviz
+types-requests

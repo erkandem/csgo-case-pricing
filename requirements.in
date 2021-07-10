@@ -3,3 +3,6 @@ pip-tools
 pydantic
 requests
 typing_extensions
+django
+django-extensions
+ipython
