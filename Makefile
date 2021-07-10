@@ -6,8 +6,7 @@ SUPERUSER_EMAIL=admin@test.com
 SUPERUSER_PASSWORD=admin
 
 superuser:
-	@echo "from django.contrib.auth.models import User; User.objects.filter(username='${SUPERUSER_NAME}').delete()" | python manage.py shell
-	@echo "from django.contrib.auth.models import User; User.objects.create_superuser('${SUPERUSER_NAME}', '${SUPERUSER_EMAIL}', '${SUPERUSER_PASSWORD}')" | python manage.py shell
+	scripts/create_super_user.sh
 
 build-deps:
 	pip install pip==21.1.3 setuptools==57.1.0

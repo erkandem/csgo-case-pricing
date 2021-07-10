@@ -9,22 +9,27 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
 from pathlib import Path
-# Build paths inside the project like this: BASE_DIR / "subdir".
 from typing import List
 
+import environ
+
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+env = environ.Env(DEBUG=(bool, False))
+ENV_FILE = BASE_DIR / ".env"
+ENV_FILE_STR = str(ENV_FILE)
+environ.Env.read_env(env_file=ENV_FILE_STR)
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-@%pgu_vo&f^1g@y(b)^2e$hfn$1tg$=e8em)bu+=v&5bt4^_t_"
+SECRET_KEY = env.str('SECRET_KEY')
 
 # SECURITY WARNING: don"t run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG", default=False)
 
 ALLOWED_HOSTS: List[str] = []
 
@@ -132,6 +137,3 @@ STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-REST_FRAMEWORK = {
-    'COERCE_DECIMAL_TO_STRING': False,
-}
