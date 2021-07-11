@@ -23,7 +23,7 @@ class Command(BaseCommand):
         if case_name == 'all':
             case_data = ALL_CASES
         else:
-            case_data = ALL_CASES[case_name]
+            case_data = {case_name: ALL_CASES[case_name]}
 
         for case_name, case_items in case_data.items():
             case, _ = Case.objects.get_or_create(name=case_name)
